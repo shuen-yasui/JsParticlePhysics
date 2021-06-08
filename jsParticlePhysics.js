@@ -2,38 +2,41 @@ class Particle {
 	constructor(){
 	}
 	update(){
+    c.beginPath();
+    c.arc(mouseX,mouseY,10,0,Math.PI * 2,false);
+    c.strokeStyle = "white";
+    c.stroke();
+    c.fillStyle = "black";
+    c.fill();
+    c.closePath();
 	}
 }
-var mX=0
-var mY=0
-function init(){
-	update();
-}
 function update(){
-	c.clearRect(0,0,window.innerWidth,window.innerHeight);
-  c.beginPath();
-  c.arc(mX,mY,10,0,Math.PI * 2,false);
-  c.strokeStyle = "white";
-  c.stroke();
-  c.fillStyle = "black";
-  c.fill();
-  c.closePath();
+  c.clearRect(0,0,window.innerWidth,window.innerHeight);
+  i=0;
+  while(i<particles.length){
+    particles[i].update();
+    i+=1;
+  }
 	requestAnimationFrame(update);
 }
-function mouseMove(mouseEvent)
-{
-  if (mouseEvent)
-  {
+function mouseMove(mouseEvent){
+  if (mouseEvent){
     //FireFox
-    mX = mouseEvent.pageX;
-    mY = mouseEvent.pageY;
+    mouseX = mouseEvent.pageX;
+    mouseY = mouseEvent.pageY;
   }
-  else
-  {
+  else{
     //IE
-    mX = window.event.x + document.body.scrollLeft - 2;
-    mY = window.event.y + document.body.scrollTop - 2;
+    mouseX = window.event.x + document.body.scrollLeft - 2;
+    mouseY = window.event.y + document.body.scrollTop - 2;
   }
+}
+var mouseX=0;
+var mouseY=0;
+var particles=[];
+for(var i=0;i<10;i++){
+  particles.push(new Particle());
 }
 var canvas = document.querySelector('canvas');
 canvas.width = window.innerWidth;
