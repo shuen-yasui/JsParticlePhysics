@@ -1,9 +1,23 @@
 class Particle {
-	constructor(){
+	constructor(pos){
+		this.x=0;
+		this.y=0;
+		this.centerX=0;
+		this.centerY=0;
+		this.velocity=0.02;
+		this.pathRadius=50;
+		this.posInRadians = pos;
+		this.radius=5;
 	}
 	update(){
+		// Update Positions
+		this.posInRadians += this.velocity;
+		this.x = this.centerX + (this.pathRadius * (Math.cos(this.posInRadians)));
+		this.y = this.centerY + (this.pathRadius * (Math.sin(this.posInRadians)));
+		this.centerX=mouseX;
+		this.centerY=mouseY;
     c.beginPath();
-    c.arc(mouseX,mouseY,10,0,Math.PI * 2,false);
+    c.arc(this.x,this.y,this.radius,0,Math.PI * 2,false);
     c.strokeStyle = "white";
     c.stroke();
     c.fillStyle = "black";
@@ -21,13 +35,11 @@ function update(){
 	requestAnimationFrame(update);
 }
 function mouseMove(mouseEvent){
-  if (mouseEvent){
-    //FireFox
+  if (mouseEvent){//FireFox
     mouseX = mouseEvent.pageX;
     mouseY = mouseEvent.pageY;
   }
-  else{
-    //IE
+  else{//IE
     mouseX = window.event.x + document.body.scrollLeft - 2;
     mouseY = window.event.y + document.body.scrollTop - 2;
   }
@@ -35,12 +47,13 @@ function mouseMove(mouseEvent){
 var mouseX=0;
 var mouseY=0;
 var particles=[];
-for(var i=0;i<10;i++){
-  particles.push(new Particle());
+var particleCnt=10;
+for(var i=0;i<particleCnt;i++){
+  particles.push(new Particle((i/(particleCnt))*Math.PI*2));
 }
 var canvas = document.querySelector('canvas');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 var c = canvas.getContext('2d');
 canvas.onmousemove = mouseMove;
-init();
+update();
