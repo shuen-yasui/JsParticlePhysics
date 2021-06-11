@@ -18,11 +18,11 @@ class Particle {
 }
 function update(){
   c.clearRect(0,0,window.innerWidth,window.innerHeight);
-	posRadians+=0;
+	posRadians+=0.01;
 	for(var i=0;i<particleCnt;i++){
 		thisRadians=((i/(particleCnt))*Math.PI*2);
-		var x=mouseX + (pathRadius * (Math.cos(thisRadians)));
-		var y=mouseY + (pathRadius * (Math.sin(thisRadians)));
+		var x=mouseX + (pathRadius * (Math.cos(thisRadians+posRadians)));
+		var y=mouseY + (pathRadius * (Math.sin(thisRadians+posRadians)));
 	  particles.push(new Particle(x,y));
 	}
   i=0;
