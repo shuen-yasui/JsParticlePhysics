@@ -20,9 +20,19 @@ function update(){
   c.clearRect(0,0,window.innerWidth,window.innerHeight);
 	posRadians+=0.01;
 	for(var i=0;i<particleCnt;i++){
-		thisRadians=((i/(particleCnt))*Math.PI*2);
-		var x=mouseX + (pathRadius * (Math.cos(thisRadians+posRadians)));
-		var y=mouseY + (pathRadius * (Math.sin(thisRadians+posRadians)));
+		var thisRadians=((i/(particleCnt))*Math.PI*2);
+		var delta_x = centerParticleX - mouseX;
+		var delta_y = centerParticleY - mouseY;
+		var theta_radians = Math.atan2(delta_y, delta_x);
+		var hypOri = Math.hypot(delta_x,delta_y);
+		var hypNew = 0;
+		if(hypOri>1){
+			hypNew=hypOri*0.995;
+		}
+		centerParticleY = (hypNew*Math.sin(theta_radians))+mouseY;
+		centerParticleX = (hypNew*Math.cos(theta_radians))+mouseX;
+		var x=centerParticleX + (pathRadius * (Math.cos(thisRadians+posRadians)));
+		var y=centerParticleY + (pathRadius * (Math.sin(thisRadians+posRadians)));
 	  particles.push(new Particle(x,y));
 	}
   i=0;
@@ -54,6 +64,8 @@ var canvas = document.querySelector('canvas');
 var velocity=0.02;
 var pathRadius=50;
 var posRadians=1;
+var centerParticleX = 0;
+var centerParticleY = 0;
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 var c = canvas.getContext('2d');
